@@ -1,0 +1,12 @@
+[
+  {
+    "id": "paper-1",
+    "title": "Titolo del Paper Accettato",
+    "authors": "Nome del Ragazzo, AIGO Research Group",
+    "conference": "Nome Conferenza 2026",
+    "year": 2026,
+    "keywords": ["AI", "Machine Learning", "Keyword 3"],
+    "repo_url": "https://github.com/AIGO-Lab/nome-repo",
+    "original_author_url": "https://github.com/profilo-ragazzo/nome-repo"
+  }
+]
