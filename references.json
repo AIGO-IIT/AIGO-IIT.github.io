@@ -2,13 +2,13 @@
   {
     "id": "paper-1",
     "category": "paper",
-    "title": "Titolo del Paper Accettato",
-    "authors": "Nome del Ragazzo, AIGO Research Group",
+    "title": "Accepted Paper Title Example",
+    "authors": "John Doe, AIGO Research Group",
     "conference": "CVPR 2026",
     "year": 2026,
     "keywords": ["Computer Vision", "Machine Learning"],
-    "repo_url": "https://github.com/AIGO-Lab/nome-repo",
-    "original_author_url": "https://github.com/profilo-ragazzo/nome-repo"
+    "repo_url": "https://github.com/AIGO-Lab/repo-name",
+    "original_author_url": "https://github.com/original-author/repo-name"
   },
   {
     "id": "code-1",
@@ -19,17 +19,17 @@
     "year": 2026,
     "keywords": ["Python", "Library", "Tools"],
     "repo_url": "https://github.com/AIGO-Lab/core-tools",
-    "original_author_url": "https://github.com/profilo/core-tools"
+    "original_author_url": "https://github.com/original-author/core-tools"
   },
   {
     "id": "dataset-1",
     "category": "dataset",
-    "title": "Italian Medical Imaging Dataset",
+    "title": "Medical Imaging Dataset",
     "authors": "AIGO Data Team",
     "conference": "NeurIPS Datasets 2026",
     "year": 2026,
     "keywords": ["Dataset", "Medical", "MRI"],
     "repo_url": "https://github.com/AIGO-Lab/medical-dataset",
-    "original_author_url": "https://github.com/profilo/dataset"
+    "original_author_url": "https://github.com/original-author/dataset"
   }
 ]
