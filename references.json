@@ -1,12 +1,35 @@
 [
   {
     "id": "paper-1",
+    "category": "paper",
     "title": "Titolo del Paper Accettato",
     "authors": "Nome del Ragazzo, AIGO Research Group",
-    "conference": "Nome Conferenza 2026",
+    "conference": "CVPR 2026",
     "year": 2026,
-    "keywords": ["AI", "Machine Learning", "Keyword 3"],
+    "keywords": ["Computer Vision", "Machine Learning"],
     "repo_url": "https://github.com/AIGO-Lab/nome-repo",
     "original_author_url": "https://github.com/profilo-ragazzo/nome-repo"
+  },
+  {
+    "id": "code-1",
+    "category": "code",
+    "title": "AIGO Core Utility Library",
+    "authors": "AIGO Dev Team",
+    "conference": "N/A",
+    "year": 2026,
+    "keywords": ["Python", "Library", "Tools"],
+    "repo_url": "https://github.com/AIGO-Lab/core-tools",
+    "original_author_url": "https://github.com/profilo/core-tools"
+  },
+  {
+    "id": "dataset-1",
+    "category": "dataset",
+    "title": "Italian Medical Imaging Dataset",
+    "authors": "AIGO Data Team",
+    "conference": "NeurIPS Datasets 2026",
+    "year": 2026,
+    "keywords": ["Dataset", "Medical", "MRI"],
+    "repo_url": "https://github.com/AIGO-Lab/medical-dataset",
+    "original_author_url": "https://github.com/profilo/dataset"
   }
 ]
