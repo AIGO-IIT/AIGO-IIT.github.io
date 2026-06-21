@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>AIGO Research Hub</title>
+    <style>
+        body { font-family: sans-serif; background: #f8fafc; color: #0f172a; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .filters { background: white; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .filter-group { display: inline-block; margin-right: 20px; }
+        select, input { padding: 8px; border: 1px solid #cbd5e1; border-radius: 4px; }
+        .paper-card { background: white; padding: 20px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .paper-title { font-size: 1.2em; font-weight: bold; color: #0284c7; margin: 0 0 5px 0; }
+        .paper-meta { font-size: 0.9em; color: #64748b; margin-bottom: 10px; }
+        .badge { background: #e2e8f0; padding: 3px 8px; border-radius: 12px; font-size: 0.8em; margin-right: 5px; }
+        .links { margin-top: 10px; font-size: 0.9em; }
+        .links a { margin-right: 15px; color: #0284c7; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AIGO Publications & Code Hub</h1>
+        
+        <div class="filters">
+            <div class="filter-group">
+                <label>Conferenza: </label>
+                <select id="confSelect" onchange="filterPapers()">
+                    <option value="all">Tutte</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Keyword: </label>
+                <select id="keywordSelect" onchange="filterPapers()">
+                    <option value="all">Tutte</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="papersList"></div>
+    </div>
+
+    <script>
+        let allPapers = [];
+
+        async function init() {
+            try {
+                // Legge in automatico il file JSON
+                const response = await fetch('references.json');
+                allPapers = await response.json();
+                populateFilters();
+                renderPapers(allPapers);
+            } catch (error) {
+                console.error('Errore nel caricamento del file JSON:', error);
+                document.getElementById('papersList').innerHTML = '<p>Errore nel caricamento dei dati. Controlla che il file references.json sia formattato correttamente.</p>';
+            }
+        }
+
+        function populateFilters() {
+            const confs = new Set(allPapers.map(p => p.conference));
+            const keywords = new Set(allPapers.flatMap(p => p.keywords));
+            
+            const confSelect = document.getElementById('confSelect');
+            confs.forEach(c => confSelect.add(new Option(c, c)));
+            
+            const keySelect = document.getElementById('keywordSelect');
+            keywords.forEach(k => keySelect.add(new Option(k, k)));
+        }
+
+        function renderPapers(papers) {
+            const list = document.getElementById('papersList');
+            list.innerHTML = papers.map(p => `
+                <div class="paper-card">
+                    <div class="paper-title">${p.title}</div>
+                    <div class="paper-meta"><strong>Autori:</strong> ${p.authors} | <strong>Sede:</strong> ${p.conference}</div>
+                    <div>${p.keywords.map(k => `<span class="badge">${k}</span>`).join('')}</div>
+                    <div class="links">
+                        <a href="${p.repo_url}" target="_blank">📦 Fork Ufficiale AIGO</a>
+                        <a href="${p.original_author_url}" target="_blank">👤 Profilo Autore</a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterPapers() {
+            const selectedConf = document.getElementById('confSelect').value;
+            const selectedKey = document.getElementById('keywordSelect').value;
+            
+            const filtered = allPapers.filter(p => {
+                const matchConf = selectedConf === 'all' || p.conference === selectedConf;
+                const matchKey = selectedKey === 'all' || p.keywords.includes(selectedKey);
+                return matchConf && matchKey;
+            });
+            renderPapers(filtered);
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
