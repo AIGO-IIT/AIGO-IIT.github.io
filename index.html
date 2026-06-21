@@ -2,62 +2,233 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AIGO Research Hub</title>
     <style>
-        body { font-family: sans-serif; background: #f8fafc; color: #0f172a; padding: 20px; }
-        .container { max-width: 1000px; margin: 0 auto; }
-        .filters { background: white; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        .filter-group { display: inline-block; margin-right: 20px; }
-        select, input { padding: 8px; border: 1px solid #cbd5e1; border-radius: 4px; }
-        .paper-card { background: white; padding: 20px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        .paper-title { font-size: 1.2em; font-weight: bold; color: #0284c7; margin: 0 0 5px 0; }
-        .paper-meta { font-size: 0.9em; color: #64748b; margin-bottom: 10px; }
-        .badge { background: #e2e8f0; padding: 3px 8px; border-radius: 12px; font-size: 0.8em; margin-right: 5px; }
-        .links { margin-top: 10px; font-size: 0.9em; }
-        .links a { margin-right: 15px; color: #0284c7; text-decoration: none; font-weight: bold; }
+        :root {
+            --primary: #0f172a;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+        }
+
+        body { 
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
+            background: var(--bg); 
+            color: var(--text-main); 
+            margin: 0; 
+            padding: 0; 
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary), #1e293b);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 { margin: 0; font-size: 2.5em; letter-spacing: -0.5px; }
+        .header p { color: #94a3b8; font-size: 1.1em; margin-top: 10px; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 30px 20px; }
+
+        /* Tabs Navigation */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: var(--card-bg);
+            border: 1px solid #e2e8f0;
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-size: 1em;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .tab-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .tab-btn.active { background: var(--accent); color: white; border-color: var(--accent); box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3); }
+
+        /* Filters */
+        .filters { 
+            background: var(--card-bg); 
+            padding: 20px; 
+            border-radius: 12px; 
+            margin-bottom: 30px; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 200px; }
+        .filter-group label { font-size: 0.85em; font-weight: bold; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        select { 
+            padding: 10px; 
+            border: 1px solid #cbd5e1; 
+            border-radius: 8px; 
+            font-size: 1em; 
+            background: white; 
+            cursor: pointer; 
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        select:focus { border-color: var(--accent); }
+
+        /* Grid System */
+        #papersList {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 25px;
+        }
+
+        /* Cards */
+        .paper-card { 
+            background: var(--card-bg); 
+            padding: 25px; 
+            border-radius: 16px; 
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+            border: 1px solid #f1f5f9;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .paper-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+
+        .category-badge {
+            align-self: flex-start;
+            font-size: 0.75em;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+        .cat-paper { background: #dbeafe; color: #1e40af; }
+        .cat-code { background: #dcfce7; color: #166534; }
+        .cat-dataset { background: #f3e8ff; color: #6b21a8; }
+
+        .paper-title { font-size: 1.25em; font-weight: 700; color: var(--primary); margin: 0 0 10px 0; line-height: 1.3; }
+        .paper-meta { font-size: 0.9em; color: var(--text-muted); margin-bottom: 15px; flex-grow: 1; }
+        .paper-meta strong { color: #475569; }
+        
+        .keywords { margin-bottom: 20px; }
+        .badge { 
+            background: #f1f5f9; 
+            color: #475569;
+            padding: 4px 10px; 
+            border-radius: 12px; 
+            font-size: 0.8em; 
+            margin-right: 5px; 
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+
+        .links { 
+            display: flex; 
+            gap: 15px; 
+            border-top: 1px solid #e2e8f0; 
+            padding-top: 15px; 
+        }
+        .links a { 
+            color: var(--accent); 
+            text-decoration: none; 
+            font-weight: 600; 
+            font-size: 0.9em; 
+            display: flex; 
+            align-items: center; 
+            gap: 5px; 
+            transition: color 0.2s;
+        }
+        .links a:hover { color: var(--accent-hover); }
+
+        .empty-state { text-align: center; padding: 40px; color: var(--text-muted); grid-column: 1 / -1; }
     </style>
 </head>
 <body>
+    
+    <div class="header">
+        <h1>AIGO Research Hub</h1>
+        <p>Esplora le nostre pubblicazioni, codici open-source e dataset</p>
+    </div>
+
     <div class="container">
-        <h1>AIGO Publications & Code Hub</h1>
         
+        <!-- Tabs (Sezioni) -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="setCategory('all', this)">🌐 Tutti i Lavori</button>
+            <button class="tab-btn" onclick="setCategory('paper', this)">📄 Papers</button>
+            <button class="tab-btn" onclick="setCategory('code', this)">💻 Codes</button>
+            <button class="tab-btn" onclick="setCategory('dataset', this)">📊 Datasets</button>
+        </div>
+
+        <!-- Filtri Dropdown -->
         <div class="filters">
             <div class="filter-group">
-                <label>Conferenza: </label>
-                <select id="confSelect" onchange="filterPapers()">
-                    <option value="all">Tutte</option>
+                <label>Conferenza / Venue</label>
+                <select id="confSelect" onchange="filterData()">
+                    <option value="all">Mostra Tutte</option>
                 </select>
             </div>
             <div class="filter-group">
-                <label>Keyword: </label>
-                <select id="keywordSelect" onchange="filterPapers()">
-                    <option value="all">Tutte</option>
+                <label>Argomento (Keyword)</label>
+                <select id="keywordSelect" onchange="filterData()">
+                    <option value="all">Mostra Tutti</option>
                 </select>
             </div>
         </div>
 
+        <!-- Griglia dei Risultati -->
         <div id="papersList"></div>
     </div>
 
     <script>
-        let allPapers = [];
+        let allData = [];
+        let currentCategory = 'all';
 
         async function init() {
             try {
-                // Legge in automatico il file JSON
                 const response = await fetch('references.json');
-                allPapers = await response.json();
+                allData = await response.json();
                 populateFilters();
-                renderPapers(allPapers);
+                filterData();
             } catch (error) {
-                console.error('Errore nel caricamento del file JSON:', error);
-                document.getElementById('papersList').innerHTML = '<p>Errore nel caricamento dei dati. Controlla che il file references.json sia formattato correttamente.</p>';
+                console.error('Errore:', error);
+                document.getElementById('papersList').innerHTML = '<div class="empty-state">Errore nel caricamento del database (references.json).</div>';
             }
         }
 
+        function setCategory(category, element) {
+            currentCategory = category;
+            
+            // Aggiorna lo stile dei pulsanti
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            
+            filterData();
+        }
+
         function populateFilters() {
-            const confs = new Set(allPapers.map(p => p.conference));
-            const keywords = new Set(allPapers.flatMap(p => p.keywords));
+            const confs = new Set(allData.map(p => p.conference).filter(c => c && c !== "N/A"));
+            const keywords = new Set(allData.flatMap(p => p.keywords));
             
             const confSelect = document.getElementById('confSelect');
             confs.forEach(c => confSelect.add(new Option(c, c)));
@@ -66,31 +237,54 @@
             keywords.forEach(k => keySelect.add(new Option(k, k)));
         }
 
-        function renderPapers(papers) {
-            const list = document.getElementById('papersList');
-            list.innerHTML = papers.map(p => `
-                <div class="paper-card">
-                    <div class="paper-title">${p.title}</div>
-                    <div class="paper-meta"><strong>Autori:</strong> ${p.authors} | <strong>Sede:</strong> ${p.conference}</div>
-                    <div>${p.keywords.map(k => `<span class="badge">${k}</span>`).join('')}</div>
-                    <div class="links">
-                        <a href="${p.repo_url}" target="_blank">📦 Fork Ufficiale AIGO</a>
-                        <a href="${p.original_author_url}" target="_blank">👤 Profilo Autore</a>
-                    </div>
-                </div>
-            `).join('');
+        function getCategoryLabel(cat) {
+            if (cat === 'paper') return { text: 'Paper', class: 'cat-paper' };
+            if (cat === 'code') return { text: 'Code', class: 'cat-code' };
+            if (cat === 'dataset') return { text: 'Dataset', class: 'cat-dataset' };
+            return { text: 'Progetto', class: 'cat-paper' };
         }
 
-        function filterPapers() {
+        function renderCards(data) {
+            const list = document.getElementById('papersList');
+            
+            if (data.length === 0) {
+                list.innerHTML = '<div class="empty-state">Nessun risultato trovato per i filtri selezionati.</div>';
+                return;
+            }
+
+            list.innerHTML = data.map(item => {
+                const catInfo = getCategoryLabel(item.category);
+                return `
+                <div class="paper-card">
+                    <div class="category-badge ${catInfo.class}">${catInfo.text}</div>
+                    <h3 class="paper-title">${item.title}</h3>
+                    <div class="paper-meta">
+                        <div><strong>Autori:</strong> ${item.authors}</div>
+                        ${item.conference !== "N/A" ? `<div><strong>Sede:</strong> ${item.conference} (${item.year})</div>` : ''}
+                    </div>
+                    <div class="keywords">
+                        ${item.keywords.map(k => `<span class="badge">${k}</span>`).join('')}
+                    </div>
+                    <div class="links">
+                        <a href="${item.repo_url}" target="_blank">📦 AIGO Repo</a>
+                        <a href="${item.original_author_url}" target="_blank">👤 Autore Originale</a>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        function filterData() {
             const selectedConf = document.getElementById('confSelect').value;
             const selectedKey = document.getElementById('keywordSelect').value;
             
-            const filtered = allPapers.filter(p => {
-                const matchConf = selectedConf === 'all' || p.conference === selectedConf;
-                const matchKey = selectedKey === 'all' || p.keywords.includes(selectedKey);
-                return matchConf && matchKey;
+            const filtered = allData.filter(item => {
+                const matchCategory = currentCategory === 'all' || item.category === currentCategory;
+                const matchConf = selectedConf === 'all' || item.conference === selectedConf;
+                const matchKey = selectedKey === 'all' || (item.keywords && item.keywords.includes(selectedKey));
+                return matchCategory && matchConf && matchKey;
             });
-            renderPapers(filtered);
+            
+            renderCards(filtered);
         }
 
         window.onload = init;
